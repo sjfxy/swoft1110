@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="6217674e-92c2-44ef-a8a8-71f6982ef3ab" name="122.51.193.134" url="http://122.51.193.134">
+        <fileTransfer host="122.51.193.134" port="22" rootFolder="/data/wwwroot/swoft" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
