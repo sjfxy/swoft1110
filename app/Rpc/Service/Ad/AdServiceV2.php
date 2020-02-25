@@ -198,4 +198,14 @@ class AdServiceV2 implements AdInterface
     {
         // TODO: Implement getIndexLists() method.
     }
+
+    /**
+     * @param int $type
+     * @param int $status
+     * @return array|null
+     */
+    public function getHandlerold(int $type, int $status = 1): ?array
+    {
+        // TODO: Implement getHandlerold() method.
+    }
 }

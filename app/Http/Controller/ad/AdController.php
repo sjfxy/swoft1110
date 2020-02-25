@@ -4,11 +4,15 @@ use App\Rpc\Lib\Ad\AdInterface;
 use App\Rpc\Lib\Ad\CeInterface;
 use Exception;
 use Swoft\Co;
+use Swoft\Http\Message\Request;
+use Swoft\Http\Message\Response;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
 use Swoft\Limiter\Annotation\Mapping\RateLimiter;
 use Swoft\Rpc\Client\Annotation\Mapping\Reference;
 use App\Rpc\Lib\UserInterface;
+use Swoft\Validator\Annotation\Mapping\Validate;
+
 /**
  * Class AdController
  *
@@ -182,6 +186,38 @@ class AdController
         return $this->adService->getIndex([],"fangfa,img",3);
     }
     public function FailBack(){
+        return [];
+    }
+
+    /**
+     * @RequestMapping(route="getlistold")
+     *
+     * @RateLimiter(rate=100,fallback="getListOdlFal")
+     *
+     * @return array|null
+     */
+    public function getListOld(Request $request,Response $response):?Response
+    {
+        $type = $request->input("type");
+        $type = intval($type);
+        // charset=utf-8
+        $response->withHeader("charset","utf-8");
+        if (empty($type)) {
+            $response->withStatus(-1,"type 必须传递");
+            return  $response->withContent("type 类型必须传递");
+
+        }
+          //return $this->adService->getHandlerold($type,1);
+        // 不允许返回 data 所有对象必须返回 Response 根节点对象
+        return $response->withData($this->adService->getHandlerold($type));
+    }
+
+
+    /**@RateLimiter(rate=40)
+     *
+     * @return array
+     */
+    public function getListOdlFal():array {
         return [];
     }
 

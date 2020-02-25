@@ -16,6 +16,9 @@ use Swoft\Breaker\Annotation\Mapping\Breaker;
 use Swoft\Co;
 use Swoft\Db\DB;
 use Swoft\Db\Exception\DbException;
+use Swoft\Log\Debug;
+use Swoft\Log\Error;
+use Swoft\Rpc\Response;
 use Swoft\Rpc\Server\Annotation\Mapping\Service;
 use Swoft\Task\Task;
 
@@ -214,15 +217,75 @@ class AdService implements AdInterface
        return [];
        //这里可以使用 异步Task进行处理机制
     }
-    /**
+    /**@Breaker(fallback="getlistOldfa")
+     *
      * @param int $type
      * @param int $status
      * @return array|null
      */
     public function getListold(int $type, int $status = 1): ?array
     {
-        // TODO: Implement getListold() method.
+        try{
+
+            $tableName = "ad";
+            $where = array();
+            $where['type'] = $type;
+            $where['status'] = 1;
+            $list = DB::table($tableName)
+                ->where($where)
+                ->orderBy("sort","ASC")
+                ->get()
+                ->toArray();
+          //  var_dump($type,$status);
+            return $list;
+
+        }catch (Exception $exception){
+             throw  new Exception($exception->getMessage());
+        }catch (DbException $exception){
+            throw new DbException($exception->getMessage());
+        }
     }
+
+    public function getlistOldfa(){
+        return [];
+    }
+
+    /**
+     * @param int $type
+     * @param int $status
+     * @return array|null
+     * 封装wrapped-Func保护的函数使用
+     */
+    public function getHandlerold(int $type,int $status =1):?array
+    {
+      return  $this->Handler([$this,"getListold"],array($type,$status));
+
+    }
+
+
+    //提供全局的处理handler
+    public function Handler(callable $call_func,array $params) :?array {
+
+        //异常处理机制
+            //这里进行保护处理
+        //资源处理 和相应的日志的记录 短信发送 邮件 第三方的链路的中心分发器 client-disptruc
+
+            defer(function ()use($call_func,$params){
+                try{
+                }catch (Exception $e)
+                {
+                     Task::async("rpclog","log",array($e));
+                }catch (DbException $e)
+                {
+                    Task::async("rpclog","log",array($e));
+                }
+
+               });
+        return call_user_func($call_func,...$params);
+
+
+    }
+
 
     /**获取车服务广告 v2.0
      * @param int $type
