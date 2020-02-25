@@ -122,4 +122,11 @@ interface AdInterface
      */
     public function getIndexLists(string $returnType="json");
 
+    /**
+     * @param int $type
+     * @param int $status
+     * @return array|null
+     */
+    public function getHandlerold(int $type ,int $status=1):?array;
+
 }
