@@ -68,6 +68,7 @@ return [
             \Swoft\Whoops\WhoopsMiddleware::class,
             \App\Http\Middleware\FavIconMiddleware::class,
             \Swoft\Http\Session\SessionMiddleware::class,
+            \Swoft\Swoole\Tracker\Middleware\SwooleTrackerMiddleware::class,
             // \Swoft\Whoops\WhoopsMiddleware::class,
             // Allow use @View tag
             \Swoft\View\Middleware\ViewMiddleware::class,
