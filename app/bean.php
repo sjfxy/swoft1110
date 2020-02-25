@@ -85,16 +85,24 @@ return [
     ],
     'db'                => [
         'class'    => Database::class,
-        'dsn'      => 'mysql:dbname=test;host=127.0.0.1',
-        'username' => 'root',
+        'dsn'      => 'mysql:dbname=ais;host=47.103.120.221',
+        'username' => 'sin',
         'password' => 'sj930826',
-        'charset' => 'utf8mb4',
+        'charset' => 'utf8',
+        'prefix'=>'lanhai_',
+//        'options'=>[
+//            PDO::ATTR_CASE=>PDO::CASE_NATURAL
+//        ]
+    ],
+    'db.pool' => [
+        'class'    => Pool::class,
+        'database' => bean('db'),
     ],
     'db2'               => [
         'class'      => Database::class,
-        'dsn'        => 'mysql:dbname=test2;host=127.0.0.1',
-        'username'   => 'root',
-        'password'   => 'swoft123456',
+        'dsn'      => 'mysql:dbname=ais;host=47.103.120.221',
+        'username' => 'sin',
+        'password' => 'sj930826',
 //        'dbSelector' => bean(DbSelector::class)
     ],
     'db2.pool' => [
@@ -103,8 +111,8 @@ return [
     ],
     'db3'               => [
         'class'    => Database::class,
-        'dsn'      => 'mysql:dbname=test;host=127.0.0.1',
-        'username' => 'root',
+        'dsn'      => 'mysql:dbname=ais;host=47.103.120.221',
+        'username' => 'sin',
         'password' => 'sj930826'
     ],
     'db3.pool'          => [
