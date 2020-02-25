@@ -157,4 +157,32 @@ class AdController
         ];
     }
 
+    /**
+     * @RequestMapping(route="getIndexAdd",method={"GET","POST"})
+     *
+     * @RateLimiter(rate=20,fallback="getRateFail")
+     *
+     * @return array|null
+     */
+    public function getIndexAd():?array {
+        return $this->adService->getIndexAd(1,"id,img");
+    }
+    public function getRateFail():array {
+        return ["exception"=>"rate is 20 qps"];
+    }
+
+    /**
+     * @RequestMapping()
+     *
+     * @RateLimiter(rate=10,fallback="FailBack")
+     *
+     * @return array|null
+     */
+    public function getIndex():?array {
+        return $this->adService->getIndex([],"fangfa,img",3);
+    }
+    public function FailBack(){
+        return [];
+    }
+
 }
