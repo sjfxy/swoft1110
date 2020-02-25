@@ -281,7 +281,7 @@ class AdService implements AdInterface
                 }
 
                });
-        return call_user_func($call_func,...$params);
+             return call_user_func($call_func,...$params);
 
 
     }
@@ -294,23 +294,83 @@ class AdService implements AdInterface
      */
     public function getService(int $type = 132, string $order = "sort ASC"): ?array
     {
-        // TODO: Implement getService() method.
+        defer(function (){
+            try{
+            }catch (Exception $e)
+            {
+                Task::async("rpclog","log",array($e));
+            }catch (DbException $e)
+            {
+                Task::async("rpclog","log",array($e));
+            }
+        });
+
+        try{
+            $tableName = "ad";
+            $orderCloum = explode(",",$order)[0];
+            $orderCloumDe = explode(",",$order)[1];
+            $list = DB::table($tableName)
+                ->where(array("type"=>$type))
+                ->orderBy($orderCloum,$orderCloumDe)
+                ->get()
+                ->toArray();
+            return $list;
+        }catch (Exception $exception){
+              throw new Exception($exception->getMessage());
+        }catch (DbException $exception){
+               throw new DbException($exception->getMessage());
+        }
+
     }
+
 
     /**统一入口 查询广告信息
      * type 132 车服务 133 车生活
      * 134 车金融
      * 132 道路救援
      * 24 车金融ios
+     *
+     * @Breaker(fallback="commfail")
+     *
+     *
      * @param int $type
      * @param string $order
      * @return array|null
      */
     public function getCommon(int $type, string $order = "sort ASC"): ?array
     {
-        // TODO: Implement getCommon() method.
-    }
+        defer(function (){
+            try{
+            }catch (Exception $e)
+            {
+                Task::async("rpclog","log",array($e));
+            }catch (DbException $e)
+            {
+                Task::async("rpclog","log",array($e));
+            }
+        });
 
+        try{
+            $tableName = "ad";
+            $orderCloum = explode(" ",$order)[0];
+            $orderCloumDe = explode(" ",$order)[1];
+            $list = DB::table($tableName)
+                ->where(array("type"=>$type))
+                ->orderBy($orderCloum,$orderCloumDe)
+                ->get()
+                ->toArray();
+            return $list;
+        }catch (Exception $exception){
+            var_dump($exception->getMessage());
+            throw new Exception($exception->getMessage());
+        }catch (DbException $exception){
+            var_dump($exception->getMessage());
+            throw new DbException($exception->getMessage());
+        }
+    }
+public function commfail(){
+        return [];
+}
     /**获取车首页广告数据
      * @param string $retuType 返回类型 默认为返回json 类型 Header Content-Type text/json
      * @return mixed

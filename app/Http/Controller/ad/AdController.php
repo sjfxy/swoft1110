@@ -221,4 +221,36 @@ class AdController
         return [];
     }
 
+    /**
+     * @RequestMapping(route="common",method={"GET","POST"})
+     *
+     *
+     * @RateLimiter(rate=100,fallback="commonfa")
+     *
+     * @param Request $request
+     * @param Response $response
+     * @return null|Response
+     */
+    public function getCommonAd(Request $request,Response $response):?Response
+    {
+      $post_data =$request->input();
+      if(empty($post_data['type'])){
+          $content = json(-1,"type 必须传递");
+        //  return $content;
+         return $response->withContent($content);
+      }
+      $typeMapping = [24,132,134,133,132];
+      $turnDescription = ["车金融IOS","道路救援","车金融","车生活","车服务"];
+      $turnDescription = array_combine($typeMapping,$turnDescription);
+      if(!in_array($post_data['type'],$typeMapping)){
+        return  $response->withContent(json(-1,"type 传递错误",$turnDescription));
+      }
+     return $response->withContent(json(1,'ok',$this->adService->getCommon(intval($post_data['type']))));
+    }
+    public function commonfa():?Response{
+        $error  = context()->getSwooleServer()->getLastError();
+        $data = ['code'=>10010,"rate"=>context()->getRequest()->getRequestTarget(),"error"=>$error];
+        return context()->getResponse()->withData($data);
+    }
+
 }
