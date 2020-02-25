@@ -12,6 +12,7 @@ namespace App\Rpc\Service\Ad;
 use App\Rpc\Lib\Ad\AdInterface;
 use App\Rpc\Lib\Ad\CeInterface;
 use Exception;
+use Swoft\Breaker\Annotation\Mapping\Breaker;
 use Swoft\Co;
 use Swoft\Db\DB;
 use Swoft\Db\Exception\DbException;
@@ -86,7 +87,7 @@ class AdService implements AdInterface
 
     /**
      * @param int $status
-     *
+     * @Breaker(timeout=3.0,fallback="getFinanceFall",failThreshold=3)
      * @return array
      */
     public function getFinance(int $status = 1): array
@@ -94,27 +95,16 @@ class AdService implements AdInterface
         try{
            $tableName = "finance";
            $where = array("status"=>$status);
-           $data = DB::table($tableName)->where($where)->cursor();
-            foreach($data as $key=>$val) {
-                $keywords = $val['keywords'];
-                $keywords = explode(',', $keywords);
-                $content = $val['content'];
-                $content = explode(',', $content);
-                $re_data[$key]['title'] = $val['title'];
-                $re_data[$key]['excerpt'] = $val['excerpt'];
-                $re_data[$key]['addtime'] = date('Y-m-d', $val['addtime']);
-                foreach ($keywords as $key2 => $val2) {
-                    $re_data[$key]['mokuai'][$key2]['keywords'] = $val2;
-                    $re_data[$key]['mokuai'][$key2]['content'] = $content[$key2];
-                }
-            }
-            var_dump($re_data);
-            return $re_data;
-
+           $data = DB::table($tableName)->where($where)->get();
+           return $data->toArray();
             }catch (DbException $exception){
-              var_dump($exception->getMessage());
+              return ["exception"=>$exception->getMessage()];
         }catch (Exception $exception){
-        return [];
+           return ['exception'=>$exception->getMessage()];
         }
+    }
+    //方法降级
+    public function getFinanceFall():array {
+        return ["exception"=>AdService::class];
     }
 }
