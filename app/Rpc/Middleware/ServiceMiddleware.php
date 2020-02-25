@@ -15,6 +15,7 @@ use Swoft\Rpc\Server\Contract\MiddlewareInterface;
 use Swoft\Rpc\Server\Contract\RequestHandlerInterface;
 use Swoft\Rpc\Server\Contract\RequestInterface;
 use Swoft\Rpc\Server\Contract\ResponseInterface;
+use Swoft\Swoole\Tracker\SwooleTracker;
 
 /**
  * Class ServiceMiddleware
@@ -33,6 +34,10 @@ class ServiceMiddleware implements MiddlewareInterface
      */
     public function process(RequestInterface $request, RequestHandlerInterface $requestHandler): ResponseInterface
     {
+//        $swooleTracker = bean(SwooleTracker::class);
+//        $swooleTracker->startRpcAnalysis("/","rpc","127.0.0.1");
+//这个可以需要使用到的地方单独的额外的设置 因为这个是请求的信息
+      //  $swooleTracker->startRpcAnalysis($request->)
         return $requestHandler->handle($request);
     }
 }
