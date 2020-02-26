@@ -361,10 +361,10 @@ class AdService implements AdInterface
                 ->toArray();
             return $list;
         }catch (Exception $exception){
-            var_dump($exception->getMessage());
+          //  var_dump($exception->getMessage());
             throw new Exception($exception->getMessage());
         }catch (DbException $exception){
-            var_dump($exception->getMessage());
+           // var_dump($exception->getMessage());
             throw new DbException($exception->getMessage());
         }
     }
@@ -377,7 +377,120 @@ public function commfail(){
      */
     public function getIndexListHtmlJson(string $retuType = "json")
     {
-        // TODO: Implement getIndexListHtmlJson() method.
+       try{
+             if($retuType == "json")
+             {
+                 $data = $this->getIndex();
+                 $chejinrong = $data['chejinrong'];
+                 $data['headmenu'] = '<ul class="list_indexs">
+								<li onclick="openTab(\'esc\');">
+									<img src="../img/cjyc.png" alt="">
+									<span>车买卖</span>
+								</li>
+								<!--<li onclick="openTab(\'carFinance_old\')">
+									<img src="../img/cjrc.png" alt="">
+									<span>车资讯</span>
+								</li>-->
+								<li onclick="openTab(\'service_jr\')">
+									<img src="../img/cjrc.png" alt="">
+									<span>车金融</span>
+								</li>
+								<li onclick="openTab(\'service\');">
+									<img src="../img/cfwc.png" alt="">
+									<span>车服务</span>
+								</li>
+								<li onclick="openTab(\'zsh\');">
+									<img src="../img/zshc.png" alt="">
+									<span>车生活</span>
+								</li>
+								<li onclick="openTab(\'houseProperty\');">
+									<img src="../img/chejiating.png" alt="">
+									<span>车家庭</span>
+								</li>
+								<div style="clear:both;"></div>
+							</ul>';
+                 $data['footmenu'] = '<ul>
+								<li tapmode="hover" onclick="openTab(\'esc\')" class="flex-con"><span>车买卖</span></li>
+								<!--<li tapmode="hover" onclick="openTab(\'carFinance_old\')" class="flex-con"><span>车资讯</span></li>-->
+								<li tapmode="hover" onclick="openTab(\'service_jr\');" class="flex-con"><span>车金融</span></li>
+								<li tapmode="hover" onclick="openTab(\'service\');" class="flex-con"><span>车服务</span></li>
+								<li tapmode="hover" onclick="openTab(\'zsh\')" class="flex-con"><span>车生活</span></li>
+								<li tapmode="hover" onclick="openTab(\'houseProperty\');" class="flex-con"><span>车家庭</span></li>
+							</ul>';
+                 /*$data['financemenu'] = '<div class="dhb">
+                         <span class="cu china">车资讯</span>
+                         <a onclick="openTab(\'carFinance_old\')"></a>
+                     </div>
+                     <div class="gg3">
+                         <div class="loopImg">
+                             <div class="swiper-container swiper-container3">
+                                 <div class="swiper-wrapper" id="chejinrong">';
+                                 foreach($chefuwu as $val){
+                     $data['financemenu'] .= '<div class="swiper-slide" onclick="'.$val['fangfa'].'"><img src="http://che.ais-car.com'.$val['img'].'" /></div>';
+                                 }
+                 $data['financemenu'] .= '</div>
+                                 <div class="swiper-pagination"></div>
+                             </div>
+                         </div>
+                         <ul class="cjr_list">
+                             <li onclick="openTab(\'carFinance_old\')">
+                                 <img src="../img/xfjr.png" alt="">
+                                 <span>消费金融</span>
+                             </li>
+                             <li class="only" onclick="openTab(\'carFinance_old\')">
+                                 <img src="../img/cldd.png" alt="">
+                                 <span>车辆抵贷</span>
+                             </li>
+                             <li onclick="openTab(\'carFinance_old\')">
+                                 <img src="../img/yzdg.png" alt="">
+                                 <span>以租代购</span>
+                             </li>
+                             <div class="clear"></div>
+                         </ul>
+                     </div>';*/
+
+                 $data['financemenu'] = '<div class="dhb">
+                <span class="cu china">车金融</span>
+                <!-- <span class="cu eng">CAR FINANCIAL</span> -->
+                <a onclick="openTabsJr(\'service_jr\')"></a>
+            </div>
+            <div class="gg3">
+                <!-- 轮播 -->
+                <div class="loopImg">
+                    <div class="swiper-container swiper-container3">
+                        <div class="swiper-wrapper" id="chejinrong">';
+                 foreach($chejinrong as $val){
+                     $data['financemenu'] .= '<div class="swiper-slide" onclick="'.$val['fangfa'].'"><img src="http://che.ais-car.com'.$val['img'].'" /></div>';
+                 }
+                 $data['financemenu'] .= '</div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+                <ul class="cjr_list">
+                    <li onclick="openTabsJr(\'service_jr\',146)">
+                        <img src="../img/jrgr_index.png" alt="">
+                        <span>个人金融</span>
+                    </li>
+                    <li class="only" onclick="openTabsJr(\'service_jr\',149)">
+                        <img src="../img/jrbx_index.png" alt="">
+                        <span>理财保险</span>
+                    </li>
+                    <li onclick="openTabsJr(\'service_jr\',148)">
+                        <img src="../img/jrqy_index.png" alt="">
+                        <span>企业金融</span>
+                    </li>
+                    <div class="clear"></div>
+                </ul>
+            </div>';
+             }
+             return $data;
+       }catch (Exception $exception){
+           throw  new Exception($exception->getMessage());
+       }catch (DbException $exception){
+         throw new DbException($exception->getMessage());
+       }catch (\Throwable $exception){
+             throw $exception;
+       }
     }
 
     /**获取车首页广告数据 默认返回json格式
