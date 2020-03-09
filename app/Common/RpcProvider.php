@@ -74,6 +74,27 @@ class RpcProvider implements ProviderInterface
         // 每个机器上的所欲的端口信息 服务信息-需要上报注册到-consul-server 节点之上 进行server 处理和监听
         // 服务监控检测 服务我们只需要获取对应的$this->angent 获取服务信息和监控信息
         // 因为在Bean 中默认注册了 consul 这样在客户端就可以进行使用了
+        //这里是个客户端进行提供服务发现的处理
+        // swoole_rpc 服务 swoole_http 服务 swoole_webscoket
+        // 我们通过从consul etcd 中进行获取对应的rpc服务名称的ip:port 地址就可以了
+        // 然后我们在客户端进行
+        // 我们是来=话我们的客户端 go-rpcclient php-client swoole-phpclient
+        // 然后启动之前进行 consul进行查询可用的服务列表sername 名称
+        //获取返回的数组列表 然后
+        //返回给客户端
+        //客户端采用负载均衡的方式 从对应的服务中进行负载代理到 列表中的任意一个
+        //按道理说应该 将请求-调用服务器中的路由网关-由Nginx 中间层进行负载代理到对应提供服务的列表中
+        //请求到etcd consul
+        //有consul etcd 这样的机制去下发到
+        //对应的提供服务的rpc服务的进程中去
+        // 我们这里模拟的不是网关的层的动态请求做处理的方式
+        // 我们是rpcclient-serviceProvider-consul-获取可用的服务-servicename-[]数组ip:poft
+        // 我们进行提供服务HTTP客户端集成的方式-rpcclient-consult-provider
+        // rpclcient-send-hook-provider
+        //rpclient(provider)
+        // provider -读取信息 readServiceLists 读取列表
+        // 然后读取数据-ProviderReadServiceLists- 处理完成 可读可写的接口实例
+        // 写入到什么地方 有各自提供商提供服务
         return ['127.0.0.1:18307','127.0.0.1:18307'];
 
 
