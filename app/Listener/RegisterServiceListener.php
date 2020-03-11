@@ -80,7 +80,7 @@ class RegisterServiceListener implements EventHandlerInterface
 
         // Register
         $this->agent->registerService($service);
-        $this->agent->registerService($rpc_service);
+                $this->agent->registerService($rpc_service);
         CLog::info('Swoft http register service success by consul!');
     }
 }
