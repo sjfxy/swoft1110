@@ -60,6 +60,7 @@ class UserService implements UserInterface
     public function getBigContent(): string
     {
         $content = Co::readFile(__DIR__ . '/big.data');
+        var_dump($content);
         return $content;
     }
 
@@ -79,6 +80,7 @@ class UserService implements UserInterface
      */
     public function sendBigContent(string $content): int
     {
+        var_dump("wwww");
         return strlen($content);
     }
 }

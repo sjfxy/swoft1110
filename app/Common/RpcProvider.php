@@ -54,11 +54,7 @@ class RpcProvider implements ProviderInterface
     public function getList(Client $client): array
     {
         // Get health service from consul
-        $services = $this->agent->services();
-        $resut  = $services->getResult();
-
-        $client_host = $client->getHost();
-        $prot = $client->getPort();
+         $sevice = $this->SelectNodeList("swoft_rpc");
 //        var_dump($client_host);
 //        var_dump($prot);
         //这里进行了服务发现 进行根据获取到对应的consul 中的服务节点进行处理了 并且进行节点的监康检查
@@ -95,15 +91,30 @@ class RpcProvider implements ProviderInterface
         // provider -读取信息 readServiceLists 读取列表
         // 然后读取数据-ProviderReadServiceLists- 处理完成 可读可写的接口实例
         // 写入到什么地方 有各自提供商提供服务
-        return ['127.0.0.1:18307','127.0.0.1:18307'];
+        return $sevice;
+    }
 
+    public function SelectNodeList($service_name="swoft_rpc"){
+        //是根据我们的进行根据
+        //携程查询我们需要的节点的IP:PORT作为Selector即可
+        $search_node_list=[];
+        try{
+            $res = $this->agent->services()->getResult();
 
-     //   return  $resut;
+            //进行遍历查询出 我们需要的数组
+            foreach ($res as $re){
+                if($re['Service']==$service_name){
+                    $address= $re['Address'];
+                    $port = $re['Port'];
+                    $search_node_list[]="$address:$port";
+                }
+            }
+            return $search_node_list;
+        }catch (\RuntimeException $exception){
+            return [];
+        }catch (\Exception $exception){
+            return [];
+        }
 
-//        $services = [
-//
-//        ];
-
-     //   return $services;
     }
 }

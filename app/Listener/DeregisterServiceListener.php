@@ -16,6 +16,7 @@ use Swoft\Event\Annotation\Mapping\Listener;
 use Swoft\Event\EventHandlerInterface;
 use Swoft\Event\EventInterface;
 use Swoft\Http\Server\HttpServer;
+use Swoft\Log\Helper\CLog;
 use Swoft\Server\SwooleEvent;
 
 /**
@@ -44,5 +45,6 @@ class DeregisterServiceListener implements EventHandlerInterface
 
         $this->agent->deregisterService('swoft');
         $this->agent->deregisterService("swoft_rpc");
+        CLog::info('Swoft http deregister service success by consul!');
     }
 }
