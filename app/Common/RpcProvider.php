@@ -54,7 +54,11 @@ class RpcProvider implements ProviderInterface
     public function getList(Client $client): array
     {
         // Get health service from consul
-         $sevice = $this->SelectNodeList("swoft_rpc");
+        //var_dump($client);
+        //$sevice_name = context()->getRequest()->post("service_name","swoft_rpc");
+         $sevice_name =  context()->getRequest()->input("service_name","swoft_rpc");
+         var_dump($sevice_name);
+         $sevice = $this->SelectNodeList($sevice_name);
 //        var_dump($client_host);
 //        var_dump($prot);
         //这里进行了服务发现 进行根据获取到对应的consul 中的服务节点进行处理了 并且进行节点的监康检查
@@ -91,6 +95,7 @@ class RpcProvider implements ProviderInterface
         // provider -读取信息 readServiceLists 读取列表
         // 然后读取数据-ProviderReadServiceLists- 处理完成 可读可写的接口实例
         // 写入到什么地方 有各自提供商提供服务
+       var_dump($sevice);
         return $sevice;
     }
 

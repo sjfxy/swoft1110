@@ -89,7 +89,7 @@ class RpcController
 
     /**
      * @RequestMapping()
-     *
+     * @Breaker(fallback="rpcBreak")
      * @return array
      */
     public function sendBigString(): array
@@ -99,6 +99,9 @@ class RpcController
         $len    = strlen($content);
         $result = $this->userService->sendBigContent($content);
         return [$len, $result];
+    }
+    public function rpcBreak(){
+        return ["rpc服务异常"];
     }
 
     /**
