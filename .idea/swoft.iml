@@ -5,12 +5,15 @@
       <sourceFolder url="file://$MODULE_DIR$/test/testing" isTestSource="true" packagePrefix="AppTest\Testing\" />
       <sourceFolder url="file://$MODULE_DIR$/test/unit" isTestSource="true" packagePrefix="AppTest\Unit\" />
       <sourceFolder url="file://$MODULE_DIR$/database" isTestSource="false" packagePrefix="Database\" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/mongodb/mongodb/src" isTestSource="false" packagePrefix="MongoDB\" />
       <sourceFolder url="file://$MODULE_DIR$/app" isTestSource="false" packagePrefix="App\" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/annotations" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/instantiator" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/lexer" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/filp/whoops" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/inhere/event" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/mongodb/mongodb" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/monolog/monolog" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/myclabs/deep-copy" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/nikic/php-parser" />
